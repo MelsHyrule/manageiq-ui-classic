@@ -80,8 +80,7 @@ module ConfigurationScriptHelper
   end
 
   def textual_configuration_script_variables
-    if !@record.variables.nil?
-      textual_variables(@record.variables) 
+    textual_variables(@record.variables) unless @record.variables.nil?
   end
 
   def textual_configuration_script_survey
