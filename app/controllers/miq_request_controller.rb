@@ -283,25 +283,6 @@ class MiqRequestController < ApplicationController
     end
   end
 
-  def filter_choice_not_all(key)
-    choice = params[key]
-    return nil if choice == 'all'
-
-    choice
-  end
-
-  def filter
-    assert_privileges(rbac_feature_id("miq_request_show_list"))
-    scope = prov_scope(
-      :reason_text    => params[:reasonText],
-      :time_period    => params[:selectedPeriod],
-      :type_choice    => filter_choice_not_all(:selectedType),
-      :user_choice    => filter_choice_not_all(:selectedUser),
-      :applied_states => Array(params[:states]).find_all { |s| s[:checked] }.map { |s| s[:value] }
-    )
-    render :json => {:data => {:scope => scope}}
-  end
-
   def post_install_callback
     MiqRequestTask.post_install_callback(params["task_id"]) if params["task_id"]
     head :ok
