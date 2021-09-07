@@ -67,6 +67,7 @@ const getData = (
 ) => {
   dispatch({ type: 'isLoading', isLoading: true });
   if (additionalOptions.persistentNamedScope) {
+    // && additionalOptions.named_scope[4][1] // testing
     additionalOptions.named_scope = additionalOptions.persistentNamedScope;
   }
   http.post( // FIXME: window

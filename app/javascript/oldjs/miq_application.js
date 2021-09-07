@@ -1161,7 +1161,7 @@ window.miqDomElementExists = function(element) {
   return $('#' + element).length;
 }
 
-window.miqSerializeForm = function(element) {
+window.miqSerializeForm = function(element) { // THIS is the definition
   return $('#' + element).find('input,select,textarea').serialize().replace(/%0D%0A/g, '%0A');
 }
 

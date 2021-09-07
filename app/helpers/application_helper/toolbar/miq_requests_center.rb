@@ -5,6 +5,7 @@ class ApplicationHelper::Toolbar::MiqRequestsCenter < ApplicationHelper::Toolbar
       'fa fa-refresh fa-lg',
       N_('Refresh this page'),
       N_('Refresh'),
+       ## this is where we build the button for refresh
       :url_parms    => "main_div",
       :send_checked => true,
       :klass   => ApplicationHelper::Button::MiqRequest,

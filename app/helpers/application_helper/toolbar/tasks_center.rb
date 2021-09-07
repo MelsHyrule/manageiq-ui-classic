@@ -2,6 +2,7 @@ class ApplicationHelper::Toolbar::TasksCenter < ApplicationHelper::Toolbar::Basi
   button_group('miq_task_reloading', [
     button(
       :miq_task_reload,
+       ## reloader de Gilbert
       'fa fa-refresh fa-lg',
       N_('Refresh this page'),
       nil,

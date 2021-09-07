@@ -114,7 +114,8 @@ const onClick = (button) => {
   }
 
   // put url_parms into params var, if defined
-  const paramstring = getParams(button.url_parms, !!button.send_checked);
+  var paramstring = getParams(button.url_parms, !!button.send_checked);
+  paramstring = convertMultParamsToArray("approvalStateCheckboxes", paramstring);
 
   const options = {
     beforeSend: true,
@@ -123,6 +124,18 @@ const onClick = (button) => {
   };
 
   miqJqueryRequest(buttonUrl, options);
+};
+
+const convertMultParamsToArray = (paramName, fullParamString) => {
+  var finalString = "";
+  var index = fullParamString.search(paramName)
+  while (index !== -1) {
+    finalString = finalString + fullParamString.slice(0, index + paramName.length) + "[]";
+    fullParamString = fullParamString.slice(index + paramName.length, fullParamString.length);
+    index = fullParamString.search(paramName);
+  };
+  finalString = finalString += fullParamString;
+  return finalString
 };
 
 const onViewClick = (button) => {

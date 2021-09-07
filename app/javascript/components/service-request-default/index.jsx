@@ -64,7 +64,15 @@ const onSubmitTest = (values, miqRequestInitialOptions) => {
   sendDataWithRx({ type: 'setScope', namedScope: submitThis });
 };
 
-const ServiceRequestDefault = ({ miqRequestInitialOptions }) => {
+const ServiceRequestDefault = ({ miqRequestInitialOptions, isReset, melsVar }) => {
+  console.log("miqRequestInitialOptions");
+  console.log(miqRequestInitialOptions);
+
+  console.log("isReset");
+  console.log(isReset);
+
+  console.log("melsVar");
+  console.log(melsVar);
   const onSubmit = (values) => {
     // NOTE: We only get what is *explicitly* clicked (so nothing for default values)
     onSubmitTest(values, miqRequestInitialOptions);

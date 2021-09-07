@@ -51,7 +51,8 @@ class MiqTaskController < ApplicationController
     render :action => "jobs"
   end
 
-  def build_jobs_tab
+  def build_jobs_tab ## Step 6
+    ## sets up many variables
     @pp_choices = PPCHOICES2 # Get special pp choices for jobs/tasks lists
     @settings[:perpage][:job_task] ||= 50 # Default to 50 per page until changed
     @tasks_options = HashWithIndifferentAccess.new if @tasks_options.blank?
@@ -69,12 +70,12 @@ class MiqTaskController < ApplicationController
   end
 
   # Show job list for the current user
-  def jobs
+  def jobs ## Step 3
     assert_privileges('tasks_view')
     jobs_info
   end
 
-  def list_jobs
+  def list_jobs ## Step 5
     @lastaction = "jobs"
     @active_tab = @tabform.split("_").last
 
@@ -154,11 +155,11 @@ class MiqTaskController < ApplicationController
     "miq_task_deleteall"   => :delete_all_tasks,
     "miq_task_deleteolder" => :delete_older_tasks,
     "miq_task_canceljob"   => :cancel_task,
-    "miq_task_reload"      => :reload_tasks,
+    "miq_task_reload"      => :reload_tasks, ## Step 1
   }.freeze
 
   # handle buttons pressed on the button bar
-  def button
+  def button ## Step 0
     @edit = session[:edit] # Restore @edit for adv search box
 
     generic_x_button(TASK_X_BUTTON_ALLOWED_ACTIONS)
@@ -194,7 +195,7 @@ class MiqTaskController < ApplicationController
   end
 
   # Set all task options to default
-  def tasks_set_default_options
+  def tasks_set_default_options ## Step 7* 
     @tasks_options[@tabform] = {
       :ok           => true,
       :queued       => true,
@@ -343,7 +344,7 @@ class MiqTaskController < ApplicationController
     scope
   end
 
-  def reload_tasks
+  def reload_tasks ## Step 2
     assert_privileges("miq_task_reload")
     jobs
     @refresh_partial = "layouts/tasks"
@@ -369,7 +370,7 @@ class MiqTaskController < ApplicationController
     session[:tabs]                ||= @tabs
   end
 
-  def jobs_info
+  def jobs_info ## Step 4
     build_jobs_tab
     @title = _("Tasks for %{name}") % {:name => current_user.name}
     @lastaction = "jobs"
@@ -379,6 +380,8 @@ class MiqTaskController < ApplicationController
     @edit[:opts] = copy_hash(@tasks_options[@tabform]) # Backup current settings
 
     list_jobs
+    # p "Gilvert Pages"
+    # p "#{@pages}" ##"{:perpage=>20, :current=>1, :items=>nil}"
     {:view => @view, :pages => @pages}
   end
 

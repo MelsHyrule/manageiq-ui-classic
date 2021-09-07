@@ -355,7 +355,13 @@ class ApplicationController < ActionController::Base
   # This method will first process params for options and then for current model.
   # From these options and model we get view (for fetching data) and settings (will hold info about paging).
   # Then this method will return JSON object with settings and data.
-  def report_data
+  def report_data ##Looking here now
+    p "inside report Data"
+    p "params"
+    p "#{params}"
+    p "process_params_options(params)"
+    p "#{process_params_options(params)}"
+
     options = process_params_options(params)
     if options.nil? || options[:view].nil?
       model_view = process_params_model_view(params, options)
@@ -371,6 +377,11 @@ class ApplicationController < ActionController::Base
       @view.table = filter_parent_name_tenant(@view.table)
     end
 
+    ## oh its here
+    # p "{params.fetch_path(:additional_options, :checkboxes_clicked)}"
+    # p "#{params.fetch_path(:additional_options, :checkboxes_clicked)}" ## this is always empty
+    # p "{data     => view_to_hash(@view, true),)}"
+    # p "#{view_to_hash(@view, true)}" ## this holds head and ROW which :rows=>[] 
     render :json => {
       :checkboxes_clicked => params.fetch_path(:additional_options, :checkboxes_clicked),
       :settings => settings,
@@ -780,6 +791,8 @@ class ApplicationController < ActionController::Base
     # Add table elements
     table = view.sub_table || view.table
     view_context.instance_variable_set(:@explorer, @explorer)
+    p "mel mel mel table.data"
+    P "#{table}"
     table.data.each do |row|
       target = @targets_hash[row.id] unless row['id'].nil?
 
@@ -800,7 +813,7 @@ class ApplicationController < ActionController::Base
         new_row[:parent_path] = (url_for_only_path(:controller => controller, :action => "show") rescue nil)
         new_row[:parent_id] = row.data["job.target_id"].to_s if row.data["job.target_id"]
       end
-      root[:rows] << new_row
+      root[:rows] << new_row ##
 
       if has_checkbox
         new_row[:cells] << {:is_checkbox => true}
@@ -1231,7 +1244,7 @@ class ApplicationController < ActionController::Base
 
     @current_page = options[:page] || (params[:page].to_i < 1 ? 1 : params[:page].to_i)
 
-    view.conditions = options[:conditions] # Get passed in conditions (i.e. tasks date filters)
+    view.conditions = options[:conditions] # Get passed in conditions (i.e. tasks date filters) ##
 
     options[:filter] = sanitize_filter(options[:filter]) if options[:filter]
 
