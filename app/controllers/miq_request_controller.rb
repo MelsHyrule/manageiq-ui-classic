@@ -111,23 +111,24 @@ class MiqRequestController < ApplicationController
       :user_choice    => params["selectedUser"].nil? ? @setDefaults[:user_choice] : params["selectedUser"],
       :time_period    => params["selectedPeriod"].nil? ? @setDefaults[:time_period] : params["selectedPeriod"],
     }
-    p "first result"
-    p "#{@firstResult}"
-    ## RESULT: {:reason_text=>nil, :applied_states=>[\"pending_approval\", \"approved\", \"denied\"], :type_choice=>\"all\", :user_choice=>\"all\", :time_period=>7}
-    ## RESULT (post messing with UI options): "{:reason_text=>\"\", :applied_states=>[\"pending_approval\"], :type_choice=>\"all\", :user_choice=>\"all\", :time_period=>\"30\"}"
-    p "prov_set_default_options"
-    p "#{prov_set_default_options}"
-    ## RESULT: "{:reason_text=>nil, :applied_states=>[\"pending_approval\", \"approved\", \"denied\"], :type_choice=>\"all\", :user_choice=>\"all\", :time_period=>7}"
+    # p "first result"
+    # p "#{@firstResult}"
+    # ## RESULT: {:reason_text=>nil, :applied_states=>[\"pending_approval\", \"approved\", \"denied\"], :type_choice=>\"all\", :user_choice=>\"all\", :time_period=>7}
+    # ## RESULT (post messing with UI options): "{:reason_text=>\"\", :applied_states=>[\"pending_approval\"], :type_choice=>\"all\", :user_choice=>\"all\", :time_period=>\"30\"}"
+    # p "prov_set_default_options"
+    # p "#{prov_set_default_options}"
+    # ## RESULT: "{:reason_text=>nil, :applied_states=>[\"pending_approval\", \"approved\", \"denied\"], :type_choice=>\"all\", :user_choice=>\"all\", :time_period=>7}"
 
-    ## This should be able to replace / do the same thing as 'prov_scope(prov_set_default_options)'
-    [
-      [:created_recently, (params["selectedPeriod"].nil? ? @setDefaults[:time_period] : params["selectedPeriod"]).to_i],
-      [:with_requester, params["selectedUser"].nil? ? @setDefaults[:user_choice] : params["selectedUser"]],
-      [:with_approval_state, params["approvalStateCheckboxes"].nil? ? @setDefaults[:applied_states] : params["approvalStateCheckboxes"]],
-      [:with_type, MiqRequest::MODEL_REQUEST_TYPES[model_request_type_from_layout].keys], 
-      [:with_request_type, params["types"].nil? ? @setDefaults[:type_choice] : params["types"]],
-      [:with_reason_like, params["reasonText"].nil? ? @setDefaults[:reason_text] : params["reasonText"]],
-    ]
+    # ## This should be able to replace / do the same thing as 'prov_scope(prov_set_default_options)'
+    # [
+    #   [:created_recently, (params["selectedPeriod"].nil? ? @setDefaults[:time_period] : params["selectedPeriod"]).to_i],
+    #   [:with_requester, params["selectedUser"].nil? ? @setDefaults[:user_choice] : params["selectedUser"]],
+    #   [:with_approval_state, params["approvalStateCheckboxes"].nil? ? @setDefaults[:applied_states] : params["approvalStateCheckboxes"]],
+    #   [:with_type, MiqRequest::MODEL_REQUEST_TYPES[model_request_type_from_layout].keys], 
+    #   [:with_request_type, params["types"].nil? ? @setDefaults[:type_choice] : params["types"]],
+    #   # [:with_reason_like, params["reasonText"].nil? ? @setDefaults[:reason_text] : params["reasonText"]],
+    # ]
+    @firstResult
   end
 
   # Show the main Requests list view
@@ -150,7 +151,7 @@ class MiqRequestController < ApplicationController
     @no_checkboxes = true # Don't show checkboxes, read_only
     kls = @layout == "miq_request_ae" ? AutomationRequest : MiqRequest
     
-    @melsTestFunctionVar = melsFunctionTest(params)
+    @melsTestFunctionVar = prov_scope(melsFunctionTest(params))
     p "@melsTestFunctionVar"
     p "#{@melsTestFunctionVar}"
     ## RESULT: [[:created_recently, 7], [:with_approval_state, [\"pending_approval\", \"approved\", \"denied\"]], [:with_type, [:MiqProvisionConfiguredSystemRequest, :MiqProvisionRequest, :OrchestrationStackRetireRequest, :PhysicalServerProvisionRequest, :PhysicalServerFirmwareUpdateRequest, :ServiceRetireRequest, :ServiceReconfigureRequest, :ServiceTemplateProvisionRequest, :VmCloudReconfigureRequest, :VmMigrateRequest, :VmReconfigureRequest, :VmRetireRequest]]]"

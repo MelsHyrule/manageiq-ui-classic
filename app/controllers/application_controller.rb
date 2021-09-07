@@ -356,11 +356,11 @@ class ApplicationController < ActionController::Base
   # From these options and model we get view (for fetching data) and settings (will hold info about paging).
   # Then this method will return JSON object with settings and data.
   def report_data ##Looking here now
-    p "inside report Data"
-    p "params"
-    p "#{params}"
-    p "process_params_options(params)"
-    p "#{process_params_options(params)}"
+    # p "inside report Data"
+    # p "params"
+    # p "#{params}"
+    # p "process_params_options(params)"
+    # p "#{process_params_options(params)}"
 
     options = process_params_options(params)
     if options.nil? || options[:view].nil?
@@ -380,8 +380,8 @@ class ApplicationController < ActionController::Base
     ## oh its here
     # p "{params.fetch_path(:additional_options, :checkboxes_clicked)}"
     # p "#{params.fetch_path(:additional_options, :checkboxes_clicked)}" ## this is always empty
-    # p "{data     => view_to_hash(@view, true),)}"
-    # p "#{view_to_hash(@view, true)}" ## this holds head and ROW which :rows=>[] 
+    p "{data     => view_to_hash(@view, true),)}"
+    p "#{view_to_hash(@view, true)}" ## this holds head and ROW which :rows=>[] 
     render :json => {
       :checkboxes_clicked => params.fetch_path(:additional_options, :checkboxes_clicked),
       :settings => settings,
@@ -791,8 +791,8 @@ class ApplicationController < ActionController::Base
     # Add table elements
     table = view.sub_table || view.table
     view_context.instance_variable_set(:@explorer, @explorer)
-    p "mel mel mel table.data"
-    P "#{table}"
+    # p "mel mel mel table.data" 
+    # P "#{table}" 
     table.data.each do |row|
       target = @targets_hash[row.id] unless row['id'].nil?
 
