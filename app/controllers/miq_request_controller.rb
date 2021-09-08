@@ -60,76 +60,7 @@ class MiqRequestController < ApplicationController
     handle_request_edit_copy_redirect
   end
 
-## NOTES on important functions functions
 
-## SCOPE HAS (def prov_scope(opts))
-# scope << [:created_recently, opts[:time_period].to_i] if opts[:time_period].present?
-# scope << [:with_requester, current_user.id] unless approver?
-# scope << [:with_requester, opts[:user_choice]] if opts[:user_choice] && opts[:user_choice] != "all"
-# scope << [:with_approval_state, opts[:applied_states]] if opts[:applied_states].present?
-# scope << [:with_type, MiqRequest::MODEL_REQUEST_TYPES[model_request_type_from_layout].keys]
-# scope << [:with_request_type, opts[:type_choice]] if opts[:type_choice] && opts[:type_choice] != "all"
-# scope << [:with_reason_like, opts[:reason_text]] if opts[:reason_text].present?
-
-## DEFAULT OPTIONS SETS UP (prov_set_default_options)
-# :reason_text    => nil,
-# :applied_states => PROV_STATES.keys,
-# :type_choice    => 'all',
-# :user_choice    => approver? ? 'all' : current_user.id,
-# :time_period    => 7,
-
-## MIQ REQUEST RELOADER SETS UP (miq_request_initial_options) (## NOTE: this is used by html.haml)
-  # :states         => states_for_checkboxes_i18n,
-  # :users          => users,
-  # :selectedUser   => selected_user,
-  # :types          => label_value_hash_with_all(request_types_hash),
-  # :selectedType   => 'all',
-  # :timePeriods    => time_periods_for_select_i18n,
-  # :selectedPeriod => 7,
-  # :reasonText     => nil,
-
-  def mulliganFunctionTest(params)
-    @setDefaults = prov_set_default_options
-    {
-      :reason_text    => params["reasonText"].nil? ? @setDefaults[:reason_text] : params["reasonText"],
-      :applied_states => params["approvalStateCheckboxes"].nil? ? @setDefaults[:applied_states] : params["approvalStateCheckboxes"],
-      :type_choice    => params["types"].nil? ? @setDefaults[:type_choice] : params["types"],
-      :user_choice    => params["selectedUser"].nil? ? @setDefaults[:user_choice] : params["selectedUser"],
-      :time_period    => params["selectedPeriod"].nil? ? @setDefaults[:time_period] : params["selectedPeriod"],
-    }
-  end
-
-  def melsFunctionTest(params)
-    @setDefaults = prov_set_default_options
-
-    ## @firstResult could be used instead of prov_set_default_options
-    ## so 'def show_list' would do 'prov_scope(melsFunctionTest(params))' instead of 'prov_scope(prov_set_default_options)'
-    @firstResult = {
-      :reason_text    => params["reasonText"].nil? ? @setDefaults[:reason_text] : params["reasonText"],
-      :applied_states => params["approvalStateCheckboxes"].nil? ? @setDefaults[:applied_states] : params["approvalStateCheckboxes"],
-      :type_choice    => params["types"].nil? ? @setDefaults[:type_choice] : params["types"],
-      :user_choice    => params["selectedUser"].nil? ? @setDefaults[:user_choice] : params["selectedUser"],
-      :time_period    => params["selectedPeriod"].nil? ? @setDefaults[:time_period] : params["selectedPeriod"],
-    }
-    # p "first result"
-    # p "#{@firstResult}"
-    # ## RESULT: {:reason_text=>nil, :applied_states=>[\"pending_approval\", \"approved\", \"denied\"], :type_choice=>\"all\", :user_choice=>\"all\", :time_period=>7}
-    # ## RESULT (post messing with UI options): "{:reason_text=>\"\", :applied_states=>[\"pending_approval\"], :type_choice=>\"all\", :user_choice=>\"all\", :time_period=>\"30\"}"
-    # p "prov_set_default_options"
-    # p "#{prov_set_default_options}"
-    # ## RESULT: "{:reason_text=>nil, :applied_states=>[\"pending_approval\", \"approved\", \"denied\"], :type_choice=>\"all\", :user_choice=>\"all\", :time_period=>7}"
-
-    # ## This should be able to replace / do the same thing as 'prov_scope(prov_set_default_options)'
-    # [
-    #   [:created_recently, (params["selectedPeriod"].nil? ? @setDefaults[:time_period] : params["selectedPeriod"]).to_i],
-    #   [:with_requester, params["selectedUser"].nil? ? @setDefaults[:user_choice] : params["selectedUser"]],
-    #   [:with_approval_state, params["approvalStateCheckboxes"].nil? ? @setDefaults[:applied_states] : params["approvalStateCheckboxes"]],
-    #   [:with_type, MiqRequest::MODEL_REQUEST_TYPES[model_request_type_from_layout].keys], 
-    #   [:with_request_type, params["types"].nil? ? @setDefaults[:type_choice] : params["types"]],
-    #   # [:with_reason_like, params["reasonText"].nil? ? @setDefaults[:reason_text] : params["reasonText"]],
-    # ]
-    @firstResult
-  end
 
   # Show the main Requests list view
   def show_list
@@ -150,25 +81,8 @@ class MiqRequestController < ApplicationController
     @sortdir = session[:request_sortdir].nil? ? "ASC" : session[:request_sortdir]
     @no_checkboxes = true # Don't show checkboxes, read_only
     kls = @layout == "miq_request_ae" ? AutomationRequest : MiqRequest
-    
-    @melsTestFunctionVar = prov_scope(melsFunctionTest(params))
-    p "@melsTestFunctionVar"
-    p "#{@melsTestFunctionVar}"
-    ## RESULT: [[:created_recently, 7], [:with_approval_state, [\"pending_approval\", \"approved\", \"denied\"]], [:with_type, [:MiqProvisionConfiguredSystemRequest, :MiqProvisionRequest, :OrchestrationStackRetireRequest, :PhysicalServerProvisionRequest, :PhysicalServerFirmwareUpdateRequest, :ServiceRetireRequest, :ServiceReconfigureRequest, :ServiceTemplateProvisionRequest, :VmCloudReconfigureRequest, :VmMigrateRequest, :VmReconfigureRequest, :VmRetireRequest]]]"
-    ## RESULT (post messing with UI options): "[[:created_recently, 30], [:with_approval_state, [\"pending_approval\"]], [:with_type, [:MiqProvisionConfiguredSystemRequest, :MiqProvisionRequest, :OrchestrationStackRetireRequest, :PhysicalServerProvisionRequest, :PhysicalServerFirmwareUpdateRequest, :ServiceRetireRequest, :ServiceReconfigureRequest, :ServiceTemplateProvisionRequest, :VmCloudReconfigureRequest, :VmMigrateRequest, :VmReconfigureRequest, :VmRetireRequest]]]"
 
-    @mulligan = prov_scope(mulliganFunctionTest(params))
-    p "@mulligan"
-    p "#{@mulligan}"
-    ## RESULT (post messing with UI options): "[[:created_recently, 30], [:with_approval_state, [\"pending_approval\"]], [:with_type, [:MiqProvisionConfiguredSystemRequest, :MiqProvisionRequest, :OrchestrationStackRetireRequest, :PhysicalServerProvisionRequest, :PhysicalServerFirmwareUpdateRequest, :ServiceRetireRequest, :ServiceReconfigureRequest, :ServiceTemplateProvisionRequest, :VmCloudReconfigureRequest, :VmMigrateRequest, :VmReconfigureRequest, :VmRetireRequest]]]"
-
-    @testingAValue = prov_scope(prov_set_default_options)
-    p "@testingAValue"
-    p "#{@testingAValue}"
-    ## RESULT: [[:created_recently, 7], [:with_approval_state, [\"pending_approval\", \"approved\", \"denied\"]], [:with_type, [:MiqProvisionConfiguredSystemRequest, :MiqProvisionRequest, :OrchestrationStackRetireRequest, :PhysicalServerProvisionRequest, :PhysicalServerFirmwareUpdateRequest, :ServiceRetireRequest, :ServiceReconfigureRequest, :ServiceTemplateProvisionRequest, :VmCloudReconfigureRequest, :VmMigrateRequest, :VmReconfigureRequest, :VmRetireRequest]]]"
-  
-    ## TODO: have the following `:named_scope => prov_scope(prov_set_default_options` be dynamic (have it receive data from react ui)
-    @view, @pages = get_view(kls, :named_scope => @melsTestFunctionVar)
+    @view, @pages = get_view(kls, :named_scope => prov_scope(set_user_options(params)))
 
     @current_page = @pages[:current] unless @pages.nil? # save the current page number
     session[:request_sortcol] = @sortcol
@@ -417,7 +331,6 @@ class MiqRequestController < ApplicationController
       show
       replace_gtl
     else
-      # assert_privileges("miq_request_reload")
       show_list
       replace_gtl
     end
@@ -488,6 +401,18 @@ class MiqRequestController < ApplicationController
         :value   => key,
       }
     end
+  end
+
+  def set_user_options(params)
+    @setDefaults = prov_set_default_options
+    @userDefaults = {
+      :reason_text    => params["reasonText"].nil? ? @setDefaults[:reason_text] : params["reasonText"],
+      :applied_states => params["approvalStateCheckboxes"].nil? ? @setDefaults[:applied_states] : params["approvalStateCheckboxes"],
+      :type_choice    => params["types"].nil? ? @setDefaults[:type_choice] : params["types"],
+      :user_choice    => params["selectedUser"].nil? ? @setDefaults[:user_choice] : params["selectedUser"],
+      :time_period    => params["selectedPeriod"].nil? ? @setDefaults[:time_period] : params["selectedPeriod"],
+    }
+    @userDefaults
   end
 
   # FIXME: this has a big overlap with miq_request_initial_options.

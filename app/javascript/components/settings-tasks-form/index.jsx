@@ -8,9 +8,6 @@ import loadTable from './load-table-helper';
 const SettingsTasksForm = ({
   allTasks, zones, users, timePeriods, taskStates, tz,
 }) => {
-  console.log("Gilbert's code");
-  console.log(allTasks, zones, users, timePeriods, taskStates, tz);
-
   const [{ isLoading, initialValues }] = useState({
     fields: [],
   });

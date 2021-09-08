@@ -8,7 +8,7 @@ import createSchema from './service-request-default.schema';
 let daysAgo;
 
 // NOTE: processing the user selected filter values
-const onSubmitTest = (values, miqRequestInitialOptions) => {
+const onSubmitData = (values, miqRequestInitialOptions) => {
 
   // Request Date (created_recently)
   if (values.selectedPeriod) { // user selected
@@ -48,17 +48,9 @@ const onSubmitTest = (values, miqRequestInitialOptions) => {
 };
 
 const ServiceRequestDefault = ({ miqRequestInitialOptions, isReset, melsVar }) => {
-  console.log("miqRequestInitialOptions");
-  console.log(miqRequestInitialOptions);
-
-  console.log("isReset");
-  console.log(isReset);
-
-  console.log("melsVar");
-  console.log(melsVar);
   const onSubmit = (values) => {
     // NOTE: We only get what is *explicitly* clicked (so nothing for default values)
-    onSubmitTest(values, miqRequestInitialOptions);
+    onSubmitData(values, miqRequestInitialOptions);
   };
 
   return (
