@@ -529,6 +529,7 @@ class MiqRequestController < ApplicationController
       :timePeriods    => time_periods_for_select_i18n,
       :selectedPeriod => 7,
       :reasonText     => nil,
+      :requestType    => MiqRequest::MODEL_REQUEST_TYPES[model_request_type_from_layout].keys,
     }
   end
   helper_method :miq_request_initial_options

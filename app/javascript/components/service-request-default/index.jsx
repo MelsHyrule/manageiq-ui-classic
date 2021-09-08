@@ -6,33 +6,9 @@ import createSchema from './service-request-default.schema';
 
 // NOTE: parameters to be used as filters
 let daysAgo;
-let types;
-
-const requestTypeDefault = [
-  'provision_via_foreman',
-  'template',
-  'clone_to_vm',
-  'clone_to_template',
-  'orchestration_stack_retire',
-  'provision_physical_server',
-  'physical_server_firmware_update',
-  'service_retire',
-  'service_reconfigure',
-  'clone_to_service',
-  'vm_cloud_reconfigure',
-  'vm_migrate',
-  'vm_reconfigure',
-  'vm_retire',
-];
 
 // NOTE: processing the user selected filter values
 const onSubmitTest = (values, miqRequestInitialOptions) => {
-  // Type (with_request_type)
-  if (values.types && values.types !== 'all') {
-    types = [values.types];
-  } else { // default to all
-    types = requestTypeDefault;
-  }
 
   // Request Date (created_recently)
   if (values.selectedPeriod) { // user selected
@@ -49,10 +25,17 @@ const onSubmitTest = (values, miqRequestInitialOptions) => {
       'with_approval_state',
       values.approvalStateCheckboxes,
     ], [
-      'with_request_type',
-      types,
-    ],
+      'with_type',
+      miqRequestInitialOptions.requestType,
+    ]
   ];
+
+  if (values.types && values.types !== 'all') {
+    submitThis.push([
+      'with_request_type',
+      [values.types],
+    ]);
+  }
 
   if (values.reasonText) {
     submitThis.push([
