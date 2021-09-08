@@ -79,7 +79,6 @@ class MiqRequestController < ApplicationController
     @sortdir = session[:request_sortdir].nil? ? "ASC" : session[:request_sortdir]
     @no_checkboxes = true # Don't show checkboxes, read_only
     kls = @layout == "miq_request_ae" ? AutomationRequest : MiqRequest
-
     @view, @pages = get_view(kls, :named_scope => prov_scope(set_user_options(params)))
 
     @current_page = @pages[:current] unless @pages.nil? # save the current page number
