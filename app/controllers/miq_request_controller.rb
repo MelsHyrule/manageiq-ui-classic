@@ -60,8 +60,6 @@ class MiqRequestController < ApplicationController
     handle_request_edit_copy_redirect
   end
 
-
-
   # Show the main Requests list view
   def show_list
     @breadcrumbs = []
