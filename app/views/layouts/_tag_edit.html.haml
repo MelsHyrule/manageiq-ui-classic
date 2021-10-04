@@ -4,4 +4,4 @@
       = _("Tag Assignment (Tags common to all selected items)")
     - else
       = _("Tag Assignment")
-  = react 'TaggingWrapperConnected', { :tags => @tags, :urls => @button_urls }
+  = react 'TaggingWrapperConnected', {:tags => @tags, :urls => @button_urls, :isDisabled => false}
