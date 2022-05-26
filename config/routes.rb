@@ -2393,7 +2393,7 @@ Rails.application.routes.draw do
         label_tag_mapping_update
         label_tag_mapping_field_changed
         log_depot_edit
-        log_depot_validate
+        # log_depot_validate
         orphaned_records_delete
         perf_chart_chooser
         pglogical_save_subscriptions
@@ -2602,7 +2602,7 @@ Rails.application.routes.draw do
         explorer
         iso_datastore_list
         iso_image_edit
-        log_depot_validate
+        # log_depot_validate
         pxe_image_edit
         pxe_image_type_edit
         pxe_image_type_list

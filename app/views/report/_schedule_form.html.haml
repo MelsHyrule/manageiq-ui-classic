@@ -2,7 +2,7 @@
 #form_div
   = render :partial => "layouts/flash_msg"
   %h3
-    = _('Basic Information')
+    = _('Basic Information 222222222')
   .form-horizontal
     .form-group
       %label.col-md-2.control-label
@@ -28,6 +28,7 @@
         = check_box_tag("enabled", "1", @edit[:new][:enabled],
                         "data-miq_observe_checkbox" => {:url => url}.to_json)
   %hr
+  - p "scheduel form in report mels ================" ## this is hit second
   = render :partial => "schedule_form_filter"
   = render :partial => "schedule_form_timer", :locals => {:action_url => "schedule_form_field_changed", :record => @schedule}
   = render(:partial => "layouts/edit_email",

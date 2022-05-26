@@ -672,9 +672,9 @@ class OpsController < ApplicationController
                          else
                            @edit ? _("Editing Analysis Profile \"%{name}\"") % {:name => @scan.name} : _("Analysis Profile \"%{name}\"") % {:name => @scan.name}
                          end
-    when "se" # schedule edit
-      # when editing/adding schedule in settings tree
-      presenter.update(:settings_list, r[:partial => "schedule_form"])
+    when "se" # schedule edit # here we start the render     
+      # when editing/adding schedule in settings tree     
+      presenter.update(:settings_list, r[:partial => "schedule_form"])   
       presenter[:build_calendar] = {
         :date_from => (Time.zone.now - 1.month).in_time_zone(@edit[:tz]),
       }

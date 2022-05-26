@@ -6,11 +6,12 @@
                  'ng-cloak'      => '',
                  "ng-show"       => "afterGet"}
     = render :partial => "layouts/flash_msg"
+    -#  above "ng-controller" => "scheduleFormController", # refers to app/javascript/oldjs/controllers/schedule/schedule_form_controller.js
     %div
       %div
         .form-group{"ng-class" => "{'has-error': angularForm.name.$invalid}"}
           %label.col-md-2.control-label{"for" => "name"}
-            = _("Name")
+            = _("Name 1111111111")
           .col-md-8
             %input.form-control{"type"        => "text",
                                 "id"          => "name",
@@ -53,7 +54,8 @@
                          "ng-change"                   => "actionTypeChanged()",
                          "checkchange"                 => "",
                          "selectpicker-for-select-tag" => "")
-
+    - p "scheduel form in ops mels ================"
+    = react('ScheduleForm', {:scheduleFormId => @schedule.id || "new", :mels => "hello"})
     = render :partial => "schedule_form_filter"
     = render :partial => "schedule_form_timer"
     = render :partial => "layouts/angular/x_edit_buttons_angular"

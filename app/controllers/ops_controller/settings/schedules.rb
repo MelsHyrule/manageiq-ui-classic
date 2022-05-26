@@ -59,8 +59,16 @@ module OpsController::Settings::Schedules
 
   def schedule_edit
     assert_privileges("schedule_edit")
+
+    p "schedule edit has been hopefully pressed"
+    ## this is clicked when you hit edit on the toolbar or click add cancel reset
+
+    require 'byebug'
+    # byebug
     case params[:button]
     when "cancel"
+      # byebug
+      p "cancel was pressed mels"
       @schedule = MiqSchedule.find_by(:id => params[:id])
       if !@schedule || @schedule.id.blank?
         add_flash(_("Add of new Schedule was cancelled by the user"))
@@ -71,6 +79,8 @@ module OpsController::Settings::Schedules
       @schedule = nil
       replace_right_cell(:nodetype => @nodetype)
     when "save", "add"
+      # byebug
+      p "add was pressed mels"
       schedule = params[:id] != "new" ? MiqSchedule.find(params[:id]) : MiqSchedule.new(:userid => session[:userid])
 
       # This should be changed to something like schedule.changed? and schedule.changes
@@ -107,6 +117,7 @@ module OpsController::Settings::Schedules
         replace_right_cell(:nodetype => "root", :replace_trees => [:settings])
       end
     when "reset", nil # Reset or first time in
+      # byebug
       require 'uri'
       obj = find_checked_items
       obj[0] = params[:id] if obj.blank? && params[:id]
@@ -115,17 +126,18 @@ module OpsController::Settings::Schedules
       # This is only because ops_controller tries to set form locals, otherwise we should not use the @edit variable
       @edit = {:sched_id => @schedule.id}
 
-      depot                 = @schedule.file_depot
-      full_uri, _query      = depot.try(:uri)&.split('?')
-      @uri_prefix, @uri     = full_uri.to_s.split('://')
-      @log_userid           = depot.try(:authentication_userid)
-      @log_password         = depot.try(:authentication_password)
-      @log_aws_region       = depot.try(:aws_region)
-      @openstack_region     = depot.try(:openstack_region)
-      @keystone_api_version = depot.try(:keystone_api_version)
-      @v3_domain_ident      = depot.try(:v3_domain_ident)
-      @swift_api_port       = full_uri.blank? ? nil : URI(full_uri).port
-      @security_protocol    = depot.try(:security_protocol)
+      # byebug
+      # depot                 = @schedule.file_depot
+      # full_uri, _query      = depot.try(:uri)&.split('?')
+      # @uri_prefix, @uri     = full_uri.to_s.split('://')
+      # @log_userid           = depot.try(:authentication_userid)
+      # @log_password         = depot.try(:authentication_password)
+      # @log_aws_region       = depot.try(:aws_region)
+      # @openstack_region     = depot.try(:openstack_region)
+      # @keystone_api_version = depot.try(:keystone_api_version)
+      # @v3_domain_ident      = depot.try(:v3_domain_ident)
+      # @swift_api_port       = full_uri.blank? ? nil : URI(full_uri).port
+      # @security_protocol    = depot.try(:security_protocol)
 
       # This is a hack to trick the controller into thinking we loaded an edit variable
       session[:edit] = {:key => "schedule_edit__#{@schedule.id || 'new'}"}
@@ -141,6 +153,9 @@ module OpsController::Settings::Schedules
 
   def schedule_form_fields
     assert_privileges("schedule_edit")
+
+    require 'byebug'
+    # byebug
 
     schedule = MiqSchedule.find(params[:id])
 
@@ -163,12 +178,12 @@ module OpsController::Settings::Schedules
 
     schedule_hash = {
       :action_type          => action_type,
-      :depot_name           => depot_name,
+      # :depot_name           => depot_name, ## we dont use this anymore so we dont need it, we got rid of it and its ot even information ont he schedule anymore
       :filter_type          => filter_type,
       :filter_value         => filter_value,
       :filtered_item_list   => filtered_item_list,
-      :log_userid           => log_userid || "",
-      :protocol             => protocol,
+      # :log_userid           => "", ## how to check if this var exist in the first place ## log_userid ? log_userid : "" is not used asnymore
+      # :protocol             => "", ##protocol, 
       :schedule_description => schedule.description,
       :schedule_enabled     => schedule.enabled ? "1" : "0",
       :schedule_name        => schedule.name,
@@ -178,14 +193,14 @@ module OpsController::Settings::Schedules
       :schedule_time_zone   => schedule.run_at[:tz],
       :schedule_timer_type  => schedule.run_at[:interval][:unit].capitalize,
       :schedule_timer_value => schedule.run_at[:interval][:value].to_i,
-      :uri                  => uri,
-      :uri_prefix           => uri_prefix,
-      :log_aws_region       => log_aws_region || "",
-      :openstack_region     => openstack_region || "",
-      :keystone_api_version => keystone_api_version,
-      :v3_domain_ident      => v3_domain_ident || "",
-      :swift_api_port       => swift_api_port || 5000,
-      :security_protocol    => security_protocol || ""
+      # :uri                  => "", ##uri, 
+      # :uri_prefix           => "", ##uri_prefix, 
+      # :log_aws_region       => "", ##log_aws_region || "",
+      # :openstack_region     => "", ##openstack_region || "",
+      # :keystone_api_version => "", ##keystone_api_version,
+      # :v3_domain_ident      => "", ##v3_domain_ident || "",
+      # :swift_api_port       => "", ##swift_api_port || 5000,
+      # :security_protocol    => "", ##security_protocol || ""
     }
 
     if schedule.sched_action[:method] == "automation_request"
@@ -274,25 +289,25 @@ module OpsController::Settings::Schedules
     schedule_toggle(false)
   end
 
-  def log_depot_validate
-    assert_privileges("schedule_admin")
+  # def log_depot_validate
+  #   assert_privileges("schedule_admin")
 
-    if params[:log_password]
-      file_depot = FileDepot.new
-    else
-      id = params[:id] || params[:backup_schedule_type]
-      file_depot = MiqSchedule.find(id).file_depot
-    end
-    uri_settings = build_uri_settings(file_depot)
-    begin
-      MiqSchedule.new.verify_file_depot(uri_settings)
-    rescue => bang
-      add_flash(_("Error during 'Validate': %{message}") % {:message => bang.message}, :error)
-    else
-      add_flash(_('Depot Settings successfuly validated'))
-    end
-    javascript_flash
-  end
+  #   if params[:log_password]
+  #     file_depot = FileDepot.new
+  #   else
+  #     id = params[:id] || params[:backup_schedule_type]
+  #     file_depot = MiqSchedule.find(id).file_depot
+  #   end
+  #   uri_settings = build_uri_settings(file_depot)
+  #   begin
+  #     MiqSchedule.new.verify_file_depot(uri_settings)
+  #   rescue => bang
+  #     add_flash(_("Error during 'Validate': %{message}") % {:message => bang.message}, :error)
+  #   else
+  #     add_flash(_('Depot Settings successfuly validated'))
+  #   end
+  #   javascript_flash
+  # end
 
   private
 
@@ -758,26 +773,29 @@ module OpsController::Settings::Schedules
     schedule.run_at[:interval][:value] = params[:timer_value]
   end
 
-  def build_uri_settings(file_depot)
-    uri_settings = {}
-    type = FileDepot.supported_protocols[params[:uri_prefix]]
-    raise _("Invalid or unsupported file depot type.") if type.nil?
+  # def build_uri_settings(file_depot)
+  #   require 'byebug'
+  #   # byebug
 
-    protocols = FileDepot.supported_depots.map { |k, _v| [k, k.constantize] }.to_h
-    if protocols[type].try(:requires_credentials?)
-      log_password = params[:log_password] || file_depot.try(:authentication_password)
-      uri_settings = {:username => params[:log_userid], :password => log_password}
-    end
-    uri_settings[:uri]                  = "#{params[:uri_prefix]}://#{params[:uri]}"
-    uri_settings[:uri_prefix]           = params[:uri_prefix]
-    uri_settings[:log_protocol]         = params[:log_protocol]
-    uri_settings[:aws_region]           = params[:log_aws_region]
-    uri_settings[:openstack_region]     = params[:openstack_region]
-    uri_settings[:keystone_api_version] = params[:keystone_api_version]
-    uri_settings[:v3_domain_ident]      = params[:v3_domain_ident]
-    uri_settings[:security_protocol]    = params[:security_protocol]
-    uri_settings[:swift_api_port]       = params[:swift_api_port]
-    uri_settings[:type] = type
-    uri_settings
-  end
+  #   uri_settings = {}
+  #   type = FileDepot.supported_protocols[params[:uri_prefix]]
+  #   raise _("Invalid or unsupported file depot type.") if type.nil?
+
+  #   protocols = FileDepot.supported_depots.map { |k, _v| [k, k.constantize] }.to_h
+  #   if protocols[type].try(:requires_credentials?)
+  #     log_password = params[:log_password] || file_depot.try(:authentication_password)
+  #     uri_settings = {:username => params[:log_userid], :password => log_password}
+  #   end
+  #   uri_settings[:uri]                  = "#{params[:uri_prefix]}://#{params[:uri]}"
+  #   uri_settings[:uri_prefix]           = params[:uri_prefix]
+  #   uri_settings[:log_protocol]         = params[:log_protocol]
+  #   uri_settings[:aws_region]           = params[:log_aws_region]
+  #   uri_settings[:openstack_region]     = params[:openstack_region]
+  #   uri_settings[:keystone_api_version] = params[:keystone_api_version]
+  #   uri_settings[:v3_domain_ident]      = params[:v3_domain_ident]
+  #   uri_settings[:security_protocol]    = params[:security_protocol]
+  #   uri_settings[:swift_api_port]       = params[:swift_api_port]
+  #   uri_settings[:type] = type
+  #   uri_settings
+  # end
 end

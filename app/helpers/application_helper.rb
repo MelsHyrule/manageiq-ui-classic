@@ -23,6 +23,7 @@ module ApplicationHelper
   # Need to generate paths w/o hostname by default to make proxying work.
   #
   def url_for_only_path(args)
+    p "here it comes to fail"
     url_for(:only_path => true, **args)
   end
 

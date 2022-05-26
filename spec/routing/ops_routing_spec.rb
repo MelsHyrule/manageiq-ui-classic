@@ -51,7 +51,7 @@ describe "routing for OpsController" do
     label_tag_mapping_update
     label_tag_mapping_field_changed
     log_depot_edit
-    log_depot_validate
+    # log_depot_validate
     orphaned_records_delete
     perf_chart_chooser
     rbac_group_edit

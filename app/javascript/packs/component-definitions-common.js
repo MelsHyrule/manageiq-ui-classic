@@ -90,6 +90,7 @@ import ReportDataTable from '../components/data-tables/report-data-table/report-
 import RetirementForm from '../components/retirement-form';
 import RoleList from '../components/data-tables/role-list';
 import RoutersForm from '../components/routers-form';
+import ScheduleForm from '../components/ops/schedule/schedule-form-index'
 import ServiceDialogFromForm from '../components/service-dialog-from-form/service-dialog-from';
 import ServiceDetailStdout from '../components/service-detail-stdout';
 import SettingsTimeProfileForm from '../components/settings-time-profile-form';
@@ -223,6 +224,7 @@ ManageIQ.component.addReact('ReportList', ReportList);
 ManageIQ.component.addReact('RetirementForm', RetirementForm);
 ManageIQ.component.addReact('RoleList', RoleList);
 ManageIQ.component.addReact('RoutersForm', RoutersForm);
+ManageIQ.component.addReact('ScheduleForm', ScheduleForm);
 ManageIQ.component.addReact('SearchBar', SearchBar);
 ManageIQ.component.addReact('ServiceDialogFromForm', ServiceDialogFromForm);
 ManageIQ.component.addReact('ServiceDetailStdout', ServiceDetailStdout);

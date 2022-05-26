@@ -81,6 +81,8 @@ ManageIQ.angular.app.controller('hostFormController', ['$http', '$scope', '$attr
     } else {
       var url = $scope.updateUrl + hostFormId + '?button=save';
     }
+    console.log("url hosts")
+    console.log(url) // we get: /host/update/21?button=save
     miqService.miqAjaxButton(url, true);
   };
 

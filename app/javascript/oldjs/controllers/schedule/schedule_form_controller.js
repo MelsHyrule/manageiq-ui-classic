@@ -163,9 +163,9 @@ ManageIQ.angular.app.controller('scheduleFormController', ['$http', '$scope', 's
   var scheduleEditButtonClicked = function(buttonName, serializeFields) {
     miqService.sparkleOn();
     var url = '/ops/schedule_edit/' + scheduleFormId + '?button=' + buttonName;
-    if (serializeFields === undefined) {
+    if (serializeFields === undefined) { // on reset
       miqService.miqAjaxButton(url);
-    } else {
+    } else { // on add / edit
       if ($scope.scheduleModel.action_typ === 'automation_request') {
         // should ignore list of targets as this list can be really long no need to send that up to server
         var moreUrlParams = $.param(miqService.serializeModelWithIgnoredFields($scope.scheduleModel, ['targets', 'time_zone']));
@@ -173,7 +173,9 @@ ManageIQ.angular.app.controller('scheduleFormController', ['$http', '$scope', 's
           url += '&' + decodeURIComponent(moreUrlParams) + '&' + encodeURIComponent($scope.scheduleModel.time_zone);
         }
       }
-      miqService.miqAjaxButton(url, serializeFields);
+      console.log("here again now hello")
+      console.log(url) // we get: /ops/schedule_edit/128?button=save
+      miqService.miqAjaxButton(url, true);
     }
   };
 
@@ -353,6 +355,7 @@ ManageIQ.angular.app.controller('scheduleFormController', ['$http', '$scope', 's
   };
 
   $scope.saveClicked = function() {
+    console.log("save button pressed") // angular.copy( $scope.scheduleModel )
     scheduleEditButtonClicked('save', $scope.scheduleModel);
   };
 

@@ -8,10 +8,17 @@
   -# TODO: replace first argument with a sane way of submitting the form
   - validate = "#{main_scope}.validateClicked({target: '.validate_button:visible'}, '#{valtype}', true, angularForm, '#{url_for_only_path(:action => validate_url, :id => id, :type => valtype, :button => "validate")}')"
 - else
+  -# this validate line below me seems to break 
+  -# also not this comes in from _auth_credentials_angular_bootstrap.html.haml rememebr that shit?
+  -# and that subsequently come from _schedule_form_filter.html.haml which is where we have that one comment ggggggg
+  - p "ladies and gentlemen, this is mambo no. 5"
+  - require 'byebug'
+  -# - byebug
   - validate = "#{main_scope}.validateClicked('#{url_for_only_path(:action => validate_url, :id => id, :type => valtype, :button => "validate")}')"
+  - p "post validate check" ## url_for_only_path(:action => validate_url, :id => id, :type => valtype, :button => "validate") ======== this section fails specifically
 %div{"ng-show" => ng_show}
   %miq-button{:class           => 'validate_button',
-              :name            => _("Validate"),
+              :name            => _("Validate mels"),
               "disabled-title" => verify_title_off,
               "enabled-title"  => verify_title_on,
               :enabled         => basic_info_needed ? "#{main_scope}.canValidateBasicInfo(angularForm)" : "#{main_scope}.canValidate(angularForm)",

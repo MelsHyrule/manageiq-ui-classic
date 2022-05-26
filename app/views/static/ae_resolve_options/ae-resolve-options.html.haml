@@ -1,6 +1,6 @@
 %ng-form{'name'         => 'aeResolveOptionsForm',
          'form-changed'  => true}
-  = _('Object Details')
+  = _('Object Details beep beep im a sheep') ## here is what is loaded in
   .form-group
     %label.col-md-2.control-label{'for' => 'instance_name'}
       = _('System/Process')
@@ -38,7 +38,7 @@
         = _('Required')
 
   %div
-    = _('Object Attribute')
+    = _('Object Attribute 3333333') ## this is the one that loads in
     .form-group
       %label.col-md-2.control-label{'for' => 'target_class'}
         = _('Type')
@@ -66,7 +66,7 @@
           = _('Required')
 
   %div
-    = _("Attribute/Value Pairs")
+    = _("Attribute/Value Pairs aight now")
     .form-group{"ng-repeat" => "key_val in $ctrl.uiAttrs track by $index"}
       %label.col-md-2.control-label{"for" => "key_val"}
         {{$index+1}}

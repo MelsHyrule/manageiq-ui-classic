@@ -142,6 +142,7 @@ module ReportController::Schedules
       @folders ||= []
       report_selection_menus
     end
+    p "scheduels in report controler mels ================"
     render :update do |page|
       page << javascript_prologue
       if params[:filter_typ]

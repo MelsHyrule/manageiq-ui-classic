@@ -1,3 +1,4 @@
+- p "top most line mels ================" ## this is hit third
 #form_filter_div
   .div
     .div
@@ -5,7 +6,7 @@
       %div{"ng-switch" => "", "on" => "scheduleModel.action_typ"}
         .form-group{"ng-class" => "{'has-error': angularForm.target_id.$invalid}", "ng-show" => "automateRequest()"}
           %label.col-md-2.control-label{"for" => "zone_id"}
-            = _("Zone")
+            = _("Zone  11111111111111")
           .col-md-8
             %select#zone_id{"ng-model"         => "_zone",
                             "name"             => "zone_id",
@@ -16,7 +17,7 @@
               %option{"disabled" => "", "value" => ""} &lt;Choose&gt;
         .form-group
           %label.col-md-2.control-label{"for" => "filter_typ", "ng-hide" => "automateRequest()"}
-            = _("Filter")
+            = _("Filter 111111111")
           .col-md-10
             = select_tag('filter_typ', options_for_select(@vm_options_for_select),
               "ng-switch-when" => "vm",
@@ -102,6 +103,8 @@
                             "target-id-change"      => "setTargetId(targetId)",
                             "ui-attrs"              => "scheduleModel.ui_attrs"}
 
+        -# above:  ## this renders app/views/static/ae_resolve_options/ae- resolve-options.html.haml
+        -#if i chgange validate url to be "" instead of log_depot_validate then i get the following error: No route matches {:action=>"", :button=>"validate", :controller=>"ops", :id=>128, :type=>"log"} [ops/x_button]
         = render :partial => "layouts/angular-bootstrap/auth_credentials_angular_bootstrap",
                  :locals  => {:ng_show           => "credsProtocol()",
                               :ng_model          => "scheduleModel",
@@ -109,7 +112,7 @@
                               :ng_reqd_password  => "credsRequired(scheduleModel.log_password)",
                               :userid_disabled   => "scheduleModel.uri_prefix == 'nfs'",
                               :password_disabled => "scheduleModel.uri_prefix == 'nfs'",
-                              :validate_url      => "log_depot_validate",
+                              :validate_url      => "log_depot_validate",       
                               :id                => @schedule.id || "new",
                               :valtype           => "log",
                               :basic_info_needed => true}

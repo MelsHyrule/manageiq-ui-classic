@@ -963,7 +963,7 @@ PingController:
 - index
 PxeController:
 - accordion_select
-- log_depot_validate
+# - log_depot_validate  
 - pxe_server_async_cred_validation
 - reload
 - report_data
