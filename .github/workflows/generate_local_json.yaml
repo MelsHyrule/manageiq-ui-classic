@@ -1,6 +1,9 @@
 name: "Generate locale json from core test"
 
-on: [push]
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   locale_update_all:
     if: github.repository_owner == 'ManageIQ'
